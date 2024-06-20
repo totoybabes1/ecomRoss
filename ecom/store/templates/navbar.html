@@ -1,0 +1,188 @@
+<!-- Navigation-->
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static '/img/logo2.jpg' %}" alt="RGB SHOES Logo">
+            RGB SHOES
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'search' %}">Search</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
+                            <li><hr class="dropdown-divider"/></li>
+                            <li><a class="dropdown-item" href="{% url 'update_info' %}">Profile Info</a></li>
+                            <li><hr class="dropdown-divider"/></li>
+                            <li><a class="dropdown-item" href="{% url 'order_history' %}">Order History</a></li>
+                        </ul>
+                    </li>
+
+
+                    {% if user.is_superuser %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped Orders</a></li>
+                            <li><hr class="dropdown-divider"/></li>
+                            <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">UnShipped Orders</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}" id="logout-link">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
+                        <li><hr class="dropdown-divider"/></li>
+                    </ul>
+                </li>
+            </ul>
+            {% if user.is_authenticated %}
+                <form class="d-flex">
+                    <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark"><i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">{{ cart|length }}</span></a>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="notification">
+            <p>Are you sure you want to logout?</p>
+            <div class="notification-btns">
+                <button class="ok-btn">OK</button>
+                <button class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    $(document).ready(function() {
+        $('#logout-link').on('click', function(e) {
+            e.preventDefault();
+            $('.notification').fadeIn();
+        });
+
+        $('.ok-btn').on('click', function() {
+            window.location.href = "{% url 'logout' %}";
+        });
+
+        $('.cancel-btn').on('click', function() {
+            $('.notification').fadeOut();
+        });
+    });
+</script>
+
+<style>
+    .notification {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: white;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+    }
+
+    .notification p {
+        margin: 0;
+        font-size: 16px;
+        color: #721c24;
+    }
+
+    .notification-btns {
+        margin-top: 10px;
+    }
+
+    .notification-btns button {
+        padding: 8px 15px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .notification-btns button.ok-btn {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .notification-btns button.cancel-btn {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+
+
+    /* Cart Button */
+.d-flex .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.d-flex .btn:hover {
+    color: #212529;
+    text-decoration: none;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+/* Cart Badge */
+.d-flex .badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    vertical-align: baseline;
+    white-space: nowrap;
+    background-color: #343a40;
+}
+
+.d-flex .badge.ms-1 {
+    margin-left: 0.25rem;
+}
+
+.d-flex .text-white {
+    color: #fff;
+}
+
+</style>
+<!-- Navigation-->

@@ -1,0 +1,73 @@
+/* Basic form styling with gradient background */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+}
+
+/* Form control styling with 3D effect */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background: #fff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 8px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Focus effect for form control */
+.form-control:focus {
+    border-color: #66afe9;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/* Placeholder styling */
+.form-control::placeholder {
+    color: #999;
+}
+
+/* Help text styling */
+.form-text.text-muted {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* List style for help text */
+.form-text.text-muted.small li {
+    margin-bottom: 5px;
+}
+
+/* Submit button styling with gradient and 3D effect */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Hover effect for submit button */
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #0056b3, #004080);
+    transform: translateY(-2px);
+}
+
+/* Optional: Add some padding and margin to the form labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Order History</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date Ordered</th>
+            <th>Amount Paid</th>
+            <th>Shipped</th>
+            <th>Date Shipped</th>
+            <th>Delivered</th>
+            <th>Date Delivered</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.date_ordered }}</td>
+            <td>{{ order.amount_paid }}</td>
+            <td class="shipped-{{ order.shipped|yesno:"true,false" }}">{{ order.shipped }}</td>
+            <td>{{ order.date_shipped }}</td>
+            <td>{{ order.delivered|yesno:"Delivered,Pending" }}</td>
+            <td>{{ order.delivered_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br/><br/>
+{% endblock %}

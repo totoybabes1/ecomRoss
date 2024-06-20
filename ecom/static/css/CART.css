@@ -1,0 +1,33 @@
+.total-amount {
+    position: fixed;
+    top: 50%; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    transform: translateY(-50%);
+    font-size: 34px; /* Adjust the font size */
+    color: #ff6600; /* Adjust the text color */
+    font-weight: bold; /* Make the text bold */
+    padding: 10px; /* Add padding for better spacing */
+    background-color: #333; /* Background color */
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.5s ease, font-size 0.5s ease; /* Smooth transition for hover and visibility */
+}
+
+.total-amount.hidden {
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction when hidden */
+}
+
+.total-amount:hover {
+    font-size: 50px !important;
+    background-color: #ff6600; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+}
+
+#toggle-total-btn {
+    border: gray solid 5px;
+    background:black;
+    position: fixed;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    z-index: 1000; /* Ensure the button is above other content */
+}

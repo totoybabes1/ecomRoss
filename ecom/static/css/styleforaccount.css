@@ -1,0 +1,161 @@
+/* General styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background: #d4d4d4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main background container */
+.main-bg {
+  background: #202020a6;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Box container inside main background */
+.box-container {
+  background: #000000;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.76);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Left side heading */
+.heading-left {
+  color: #000000;
+  font-size: 36px;
+  margin-right: 20px;
+  flex: 1;
+}
+
+/* Form container */
+.wrap-login100 {
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; 
+  text-align: center;
+}
+
+/* Form title */
+.login100-form-title {
+  font-size: 24px;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+/* Form inputs */
+.wrap-input100 {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input100 {
+  width: 100%;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #f2f2f2;
+  font-size: 16px;
+  color: #666;
+}
+
+.focus-input100 {
+  position: absolute;
+  left: 20px;
+  bottom: 10px;
+  font-size: 12px;
+  color: #999;
+  display: none;
+}
+
+.input100:focus + .focus-input100 {
+  display: block;
+}
+
+/* Text link */
+.txt1 {
+  font-size: 14px;
+  color: #999;
+}
+
+.txt2 {
+  color: #9d9da5;
+  text-decoration: none;
+}
+
+.txt3 {
+  color: #000000;
+  text-decoration: none;
+}
+
+/* Button */
+.container-login100-form-btn {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login100-form-btn {
+  width: 50%;
+  background: #303033;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login100-form-btn:hover {
+  background: #000000;
+}
+
+/* Flex container */
+.flex-col-c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.p-t-13 {
+  padding-top: 13px;
+}
+
+.p-b-23 {
+  padding-bottom: 23px;
+}
+
+.p-t-140 {
+  padding-top: 140px;
+}
+
+.p-b-40 {
+  padding-bottom: 40px;
+}
+
+
+
+.imagelogin {
+  float: right;
+  width: 500% !important;  /* Adjust the width as needed */
+  height: auto;  /* Maintain aspect ratio */
+  max-width: 500px;  /* Set a maximum width */
+  border-radius: 20px;
+  display: block;
+  margin: auto;
+}

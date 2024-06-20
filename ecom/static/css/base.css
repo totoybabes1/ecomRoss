@@ -1,0 +1,117 @@
+@keyframes moveUpDown {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(-35deg) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(-35deg) translateY(-20px);
+  }
+}
+
+
+.main-image img {
+  margin-top: 40px;
+  z-index: 1;
+  height: 49%;
+  width: auto;
+  max-width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  filter: brightness(0.9);
+  animation: moveUpDown 12s ease-in-out infinite;
+}
+
+
+.main-image h1 {
+  color: transparent;
+  font-size: 10em;
+  width: 100vw;
+  text-align: center;
+  max-width: 100%;
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  font-family: "Hind", sans-serif;
+  letter-spacing: -0.5px;
+  -webkit-text-stroke: 3px rgb(255, 255, 255);
+  white-space: nowrap;
+}
+
+.white-text {
+  color: rgb(255, 255, 255);
+  border: black 1px solid;
+}
+
+
+.expand-icon {
+  color: white;
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5em;
+  opacity: 1;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.expand-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* static/css/styles.css */
+.main-image {
+  height: 100vh;
+  background: 
+    linear-gradient(to top left, #6966665f, #0000007a, #00000042, #84848491),
+    url('../img/wallpaper.jpg'); /* Adjust the path according to your directory structure */
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  border-bottom: 10px solid white;
+}
+
+
+/* Typing animation for the text */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+
+.typing-animation {
+  animation: typing 3s steps(30) forwards;
+}
+
+.floating-animation {
+  animation: float 2s ease-in-out infinite;
+}
+
+.animated-text {
+  margin-bottom: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3s steps(30) forwards;
+  border-right: 2px solid #fff;
+  padding-right: 10px;
+  font-size: 2em;
+}
+
+
+
+
+#floating-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 2s ease-in-out; /* Adjust the duration as needed */
+}

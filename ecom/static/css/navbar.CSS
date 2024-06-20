@@ -1,0 +1,123 @@
+/* Gradient background for the navbar */
+.navbar {
+    background: linear-gradient(45deg, #9b9696, #000000);
+    padding: 1rem;
+    transition: background 0.5s ease-in-out;
+}
+
+/* Navbar brand styling */
+.navbar-brand {
+    font-weight: bold;
+    color: #fff;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Navbar links styling */
+.navbar-nav .nav-link {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 19px;
+    color: #fff;
+    font-weight: 5000px;
+    margin-right: 1rem;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+
+.navbar-nav .nav-link.active {
+    color: #ffffff;
+    
+}
+
+/* Dropdown menu styling */
+.navbar-nav .dropdown-menu {
+    background-color: #ff6f61;
+    border: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-nav .dropdown-menu .dropdown-item {
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-nav .dropdown-menu .dropdown-item:hover {
+    background-color: #615c59;
+}
+
+/* Button styling */
+.navbar-toggler {
+    border-color: #fff;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.navbar-toggler-icon {
+    color: #fff;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Form styling */
+form .btn-outline-dark {
+    color: #000000;
+    border-color: #000000;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+form .btn-outline-dark:hover {
+    color: #ffffff;
+    background-color: #303030;
+    border-color: #000000;
+}
+
+/* Notification styling */
+.notification {
+    display: none; /* Hide by default */
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ff9966;
+    color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.notification p {
+    margin: 0 0 1rem 0;
+}
+
+.notification-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notification-btns .ok-btn,
+.notification-btns .cancel-btn {
+    background: #ff6f61;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.notification-btns .ok-btn:hover,
+.notification-btns .cancel-btn:hover {
+    background: #ff9966;
+}
+
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand img {
+    border: #ffffff 2px solid;
+    border-radius: 50%;
+    height: 80px; /* Adjust the height as needed */
+    width: auto;
+    margin-right: 10px; /* Space between the logo and the text */
+  }

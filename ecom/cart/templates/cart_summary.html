@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+            <p class="lead fw-normal text-white-50 mb-0">View Your Cart</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    {% if cart_products %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for product in cart_products %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    {% if product.is_sale %}
+                    <div class="d-flex justify-content-center small text-warning mb-2">
+                        <div class="bi-star-fill"></div>
+                        &nbsp;&nbsp;&nbsp;Sale!&nbsp;&nbsp;
+                        <div class="bi-star-fill"></div>
+                    </div>
+                    <strike>₱{{ product.price }}</strike> &nbsp;₱{{ product.sale_price }}
+                    {% else %}
+                    ₱{{ product.price }}
+                    {% endif %}
+                    <br/><br/>
+                    <div class="row">
+                        <div class="col-md-4">Quantity:</div>
+                        <div class="col-md-8">
+                            <select class="form-select form-select-sm"
+                                    id="select{{product.id}}">
+                                {% for key, values in quantities.items %}
+                                {% if key == product.id|slugify %}
+                                <option selected>{{ values }}</option>
+                                {% endif %}
+                                {% endfor %}
+                                </option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br/><br/>
+
+                </div>
+                <div class="card-footer">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'index' %}" class="btn btn-secondary">Home</a>
+                        <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update
+                        </button>
+                        <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <br/>
+    <button id="toggle-total-btn" class="btn btn-primary">Hide Total</button>
+
+    <div align="right">
+    <h3 class="total-amount">Total: ₱{{ totals }}</h3>
+    <a href="{% url 'checkout' %}" class="btn btn-success">CheckOut</a>
+    </div>
+
+{% else %}
+    <div class="text-center">There's Nothing in your Cart......</div>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+{% endif %}
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+<script>
+    $(document).on('click', '.update-cart', function (e) {
+        e.preventDefault();
+
+        var productid = $(this).data('index');
+        var product_qty = $('#select' + productid + ' option:selected').text();
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_update' %}',
+            data: {
+                product_id: productid,
+                product_qty: product_qty,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                location.reload();
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ': ' + xhr.responseText);
+            }
+        });
+    });
+
+
+ $(document).on('click', '.delete-product', function (e) {
+    e.preventDefault();
+
+    var productid = $(this).data('index');
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'cart_delete' %}',
+        data: {
+            product_id: productid,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function (json) {
+            location.reload();
+        },
+        error: function (xhr, errmsg, err) {
+            console.log(xhr.status + ': ' + xhr.responseText);
+        }
+    });
+});
+
+
+    // Hide and reveal button script with animation
+        document.getElementById('toggle-total-btn').addEventListener('click', function () {
+            var totalElement = document.querySelector('.total-amount');
+            if (totalElement.classList.contains('hidden')) {
+                totalElement.classList.remove('hidden');
+                this.textContent = 'Hide Total';
+            } else {
+                totalElement.classList.add('hidden');
+                this.textContent = 'Show Total';
+            }
+        });
+
+</script>
+
+{% endblock %}
