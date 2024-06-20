@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Shipped</title>
+</head>
+<body>
+    <p>Dear {{ full_name }},</p>
+    <p>Your order with ID {{ order_id }} has been shipped to the following address:</p>
+    <p>{{ shipping_address }}</p>
+    <p>Please click the following link to confirm that you have received your order: <a href="{{ confirmation_link }}">Confirm Shipment</a></p>
+    <p>Thank you for shopping with us!</p>
+</body>
+</html>

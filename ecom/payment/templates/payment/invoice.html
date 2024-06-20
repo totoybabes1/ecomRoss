@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        /* Your CSS styles for the invoice */
+    </style>
+</head>
+<body>
+    {% for order in orders %}
+        <h1>Invoice for Order #{{ order.id }}</h1>
+        <!-- Add your invoice details here -->
+        <p>User: {{ order.user }}</p>
+        <p>Full Name: {{ order.full_name }}</p>
+        <p>Email: {{ order.email }}</p>
+        <p>Date Ordered: {{ order.date_ordered }}</p>
+        <p>Amount Paid: {{ order.amount_paid }}</p>
+        <!-- Add more details as needed -->
+    {% endfor %}
+</body>
+</html>

@@ -2,94 +2,132 @@
 {% load static %}
 {% block content %}
 <!-- Header-->
+
 <header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Shopping Cart</h1>
-            <p class="lead fw-normal text-white-50 mb-0">View Your Cart</p>
-        </div>
+    <div class="text-center text-white">
+        <h1 class="display-4 fw-bolder">MY SHOPPING CART</h1>
+        <p class="lead fw-normal text-white-50 mb-0">View your cart here</p>
     </div>
 </header>
 
-<div class="container">
+<div class="container my-5">
     {% if cart_products %}
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for product in cart_products %}
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ product.image.url }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                    {% if product.is_sale %}
-                    <div class="d-flex justify-content-center small text-warning mb-2">
-                        <div class="bi-star-fill"></div>
-                        &nbsp;&nbsp;&nbsp;Sale!&nbsp;&nbsp;
-                        <div class="bi-star-fill"></div>
-                    </div>
-                    <strike>₱{{ product.price }}</strike> &nbsp;₱{{ product.sale_price }}
-                    {% else %}
-                    ₱{{ product.price }}
-                    {% endif %}
-                    <br/><br/>
-                    <div class="row">
-                        <div class="col-md-4">Quantity:</div>
-                        <div class="col-md-8">
-                            <select class="form-select form-select-sm"
-                                    id="select{{product.id}}">
-                                {% for key, values in quantities.items %}
-                                {% if key == product.id|slugify %}
-                                <option selected>{{ values }}</option>
-                                {% endif %}
-                                {% endfor %}
-                                </option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br/><br/>
-
-                </div>
-                <div class="card-footer">
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'index' %}" class="btn btn-secondary">Home</a>
-                        <button type="button" data-index="{{product.id}}" class="btn btn-secondary update-cart">Update
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Foot Size</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in cart_products %}
+                <tr>
+                    <td><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100px;"></td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{% if product.is_sale %}<strike class="text-muted">₱{{ product.price }}</strike> &nbsp;₱{{ product.sale_price }}{% else %}₱{{ product.price }}{% endif %}</td>
+                    <td>
+                        <select class="form-select form-select-sm bg-secondary text-white" id="select{{product.id}}">
+                            {% for key, values in quantities.items %}
+                            {% if key == product.id|slugify %}
+                            <option selected>{{ values }}</option>
+                            {% endif %}
+                            {% endfor %}
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-select form-select-sm bg-secondary text-white" id="foot-size-{{ product.id }}">
+                            <option value="">Select Foot Size</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" data-index="{{product.id}}" class="btn btn-outline-primary update-cart">
+                            <i class="bi bi-pencil"></i> Update
                         </button>
-                        <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Remove
+                        <button type="button" data-index="{{product.id}}" class="btn btn-outline-danger delete-product">
+                            <i class="bi bi-trash"></i> Remove
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
-    <br/>
-    <button id="toggle-total-btn" class="btn btn-primary">Hide Total</button>
-
-    <div align="right">
-    <h3 class="total-amount">Total: ₱{{ totals }}</h3>
-    <a href="{% url 'checkout' %}" class="btn btn-success">CheckOut</a>
+    <div class="mt-4">
+        <h3 class="text-end total-amount">Total: ₱{{ totals }}</h3>
+        <a href="{% url 'checkout' %}" class="btn btn-success float-end">Checkout</a>
     </div>
 
-{% else %}
-    <div class="text-center">There's Nothing in your Cart......</div>
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-{% endif %}
+    {% else %}
+    <div class="text-center mt-5">
+        <h3>Your cart is empty.</h3>
+    </div>
+    {% endif %}
 </div>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-
+<br/><br/><br/><br/><br/>
 
 <script>
+    $(document).ready(function () {
+        // Initialize quantities and foot sizes for all products
+        {% for product in cart_products %}
+            var productid = "{{ product.id }}";
+            var product_qty = localStorage.getItem('product_qty_' + productid);
+            var foot_size = localStorage.getItem('foot_size_' + productid);
+
+            // Set selected quantity
+            $('#select' + productid).val(product_qty);
+            
+            // Set selected foot size
+            $('#foot-size-' + productid).val(foot_size);
+        {% endfor %}
+
+        // Calculate and display total quantities in the navbar cart icon
+        var totalQuantities = 0;
+        {% for product in cart_products %}
+            var productId = "{{ product.id }}";
+            var quantity = parseInt(localStorage.getItem('product_qty_' + productId));
+            totalQuantities += quantity;
+        {% endfor %}
+        $('#cart_quantity').text(totalQuantities);
+    });
+    
+    $(document).ready(function () {
+        // Initialize quantities and foot sizes for all products
+        {% for product in cart_products %}
+            var productid = "{{ product.id }}";
+            var product_qty = localStorage.getItem('product_qty_' + productid);
+            var foot_size = localStorage.getItem('foot_size_' + productid);
+
+            // Set selected quantity
+            $('#select' + productid).val(product_qty);
+            
+            // Set selected foot size
+            $('#foot-size-' + productid).val(foot_size);
+        {% endfor %}
+    });
+
     $(document).on('click', '.update-cart', function (e) {
         e.preventDefault();
 
         var productid = $(this).data('index');
         var product_qty = $('#select' + productid + ' option:selected').text();
+        var foot_size = $('#foot-size-' + productid).val(); // Get selected foot size
 
         $.ajax({
             type: 'POST',
@@ -97,6 +135,35 @@
             data: {
                 product_id: productid,
                 product_qty: product_qty,
+                foot_size: foot_size, // Include foot size
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                // Update displayed quantity and foot size
+                $('#select' + productid).val(product_qty);
+                $('#foot-size-' + productid).val(foot_size);
+
+                // Store updated values in localStorage
+                localStorage.setItem('product_qty_' + productid, product_qty);
+                localStorage.setItem('foot_size_' + productid, foot_size);
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ': ' + xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on('click', '.delete-product', function (e) {
+        e.preventDefault();
+
+        var productid = $(this).data('index');
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_delete' %}',
+            data: {
+                product_id: productid,
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 action: 'post'
             },
@@ -109,42 +176,109 @@
         });
     });
 
-
- $(document).on('click', '.delete-product', function (e) {
-    e.preventDefault();
-
-    var productid = $(this).data('index');
-
-    $.ajax({
-        type: 'POST',
-        url: '{% url 'cart_delete' %}',
-        data: {
-            product_id: productid,
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            action: 'post'
-        },
-        success: function (json) {
-            location.reload();
-        },
-        error: function (xhr, errmsg, err) {
-            console.log(xhr.status + ': ' + xhr.responseText);
-        }
-    });
-});
-
-
-    // Hide and reveal button script with animation
-        document.getElementById('toggle-total-btn').addEventListener('click', function () {
-            var totalElement = document.querySelector('.total-amount');
-            if (totalElement.classList.contains('hidden')) {
-                totalElement.classList.remove('hidden');
-                this.textContent = 'Hide Total';
-            } else {
-                totalElement.classList.add('hidden');
-                this.textContent = 'Show Total';
-            }
-        });
-
 </script>
+
+<style>
+   
+    .total-amount {
+        text-align: end;
+        font-size: 1.2em;
+        color: black !important; /* Text color */
+        /* Additional styling properties can be added as desired */
+    }
+    
+    .total-amount:hover {
+        color: red; /* Change color on hover */
+        /* Additional hover effects can be added here */
+    }
+    
+    .card {
+        border: 2px solid #dee2e6;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        border-color: #ced4da;
+    }
+    
+    .card-img-top {
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        max-height: 390px;
+    }
+    
+    .card-title {
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .card-text {
+        color: #666;
+    }
+    
+    /* Redesigning buttons */
+.btn {
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Adjusting button icons */
+.btn i {
+    margin-right: 5px;
+}
+
+/* Optional: Adjusting button sizes */
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+/* Optional: Increasing button hover effect */
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+    .form-select {
+        border-radius: 5px;
+    }
+
+    .total-amount {
+        font-weight: bold;
+        color: #333;
+    }
+    h3 {
+    color:#dee2e6 !important;
+    }
+</style>
 
 {% endblock %}

@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpRequest, JsonResponse
+from django.contrib import messages
+from .decorators import login_required_custom
 from .cart import Cart
 from store.models import Product
-from django.http import JsonResponse
-from django.contrib import messages
 
+@login_required_custom
 def cart_summary(request):
     # get the cart
     cart = Cart(request)
@@ -13,26 +14,25 @@ def cart_summary(request):
     totals = cart.cart_total()
     return render(request, "cart_summary.html", {"cart_products": cart_products, "quantities": quantities, "totals": totals})
 
-
+@login_required_custom
 def cart_add(request):
     cart = Cart(request)
-    if request.POST.get('action') == 'post':  # Corrected the spacing around 'post'
+    if request.POST.get('action') == 'post':
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
+        foot_size = request.POST.get('foot_size')  # Get foot size
 
         product = get_object_or_404(Product, id=product_id)
        
-        #save session
-        cart.add(product=product, quantity=product_qty)
+        # Save session
+        cart.add(product=product, quantity=product_qty, foot_size=foot_size)  # Pass foot size
 
-        #get cart quantity
+        # Get cart quantity
         cart_quantity = cart.__len__()
 
-
-        #return response
+        # Return response
         response = JsonResponse({'Product Name': product.name})
-        messages.success(request,("Product Added to Cart......"))
-        #response = JsonResponse({'qty': cart_quantity})
+        messages.success(request, "Product Added to Cart...")
         return response
     
     else:
@@ -40,6 +40,7 @@ def cart_add(request):
         return response
 
 
+@login_required_custom
 def cart_delete(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
@@ -47,22 +48,25 @@ def cart_delete(request):
         cart.delete(product_id)
 
         response = JsonResponse({'product': product_id})
-        messages.success(request,("Item Deleted......"))
+        messages.success(request, "Item Deleted......")
         return response
     else:
         return JsonResponse({'error': 'Invalid request'})
 
-
+@login_required_custom
 def cart_update(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
-        #get stuff
+        # Get stuff
         product_id = int(request.POST.get('product_id'))
         product_qty = int(request.POST.get('product_qty'))
+        foot_size = request.POST.get('foot_size')  # Get foot size
 
-        cart.update(product=product_id, quantity=product_qty)
+        cart.update(product=product_id, quantity=product_qty, foot_size=foot_size)  # Pass foot size
 
-        response = JsonResponse({'qty':product_qty})
-        messages.success(request,("Your Product Updated......"))
+        response = JsonResponse({'qty': product_qty})
+        messages.success(request, "Your Product Updated...")
         return response
-        #return redirect('cart_summary')
+    else:
+        return JsonResponse({'error': 'Invalid request'})
+

@@ -1,0 +1,74 @@
+/* styles.css */
+.navbar-brand img {
+    max-height: 50px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #000000; /* Adjust color as needed */
+}
+
+.navbar-nav .nav-link.active {
+    color: #000000;
+    font-weight: bold;
+}
+
+.navbar-nav .dropdown-menu {
+    background-color: #f8f9fa;
+}
+
+.navbar-nav .dropdown-item:hover {
+    background-color: #e9ecef;
+}
+
+.login-logout-link {
+    color: #007bff;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.notification {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1050;
+    text-align: center;
+}
+
+.notification p {
+    margin-bottom: 20px;
+}
+
+.notification-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notification-btns button {
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.ok-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.fixed-top {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s;
+}

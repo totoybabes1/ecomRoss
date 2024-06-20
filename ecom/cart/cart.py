@@ -1,5 +1,5 @@
 from store.models import Product, Profile
-
+from decimal import Decimal  # Import Decimal module
 
 
 class Cart():
@@ -17,29 +17,35 @@ class Cart():
         # make sure available on all pages
         self.cart = cart
 
+    def clear(self):
+        self.cart = {}  # Set cart to an empty dictionary
+        self.session.modified = True
+
     def db_add(self, product, quantity):
         product_id = str(product)
-        product_qty = str(quantity)
-        # logic
+        
+        if isinstance(quantity, dict):
+            product_qty = quantity.get('quantity', 0)
+            foot_size = quantity.get('foot_size')
+        else:
+            product_qty = quantity
+            foot_size = None
+
         if product_id in self.cart:
             pass
         else:
-            # self.cart[product_id] = {'price': str(product.price)}
-            self.cart[product_id] = int(product_qty)
+            self.cart[product_id] = {'quantity': int(product_qty), 'foot_size': foot_size}
 
         self.session.modified = True
-    
+
         if self.request.user.is_authenticated:
-            #get the current user profile
             current_user = Profile.objects.filter(user__id=self.request.user.id)
-            #conert
             carty = str(self.cart)
-            carty = carty.replace("\'","\"")
-            #save cart to profile model
+            carty = carty.replace("'", "\"")
             current_user.update(old_cart=str(carty))
 
-    def add(self, product, quantity):
 
+    def add(self, product, quantity, foot_size=None):  # Modify add method signature
         product_id = str(product.id)
         product_qty = str(quantity)
         # logic
@@ -47,39 +53,26 @@ class Cart():
             pass
         else:
             # self.cart[product_id] = {'price': str(product.price)}
-            self.cart[product_id] = int(product_qty)
+            self.cart[product_id] = {'quantity': int(product_qty), 'foot_size': foot_size}  # Store foot size
 
         self.session.modified = True
-    
-        if self.request.user.is_authenticated:
-            #get the current user profile
-            current_user = Profile.objects.filter(user__id=self.request.user.id)
-            #conert
-            carty = str(self.cart)
-            carty = carty.replace("\'","\"")
-            #save cart to profile model
-            current_user.update(old_cart=str(carty))
 
 
     def cart_total(self):
-        # Get product IDs
-        product_ids = self.cart.keys()
-        # lookup those keys in our products database model
-        products = Product.objects.filter(id__in=product_ids)
-        # Get quantities
-        quantities = self.cart
-        # Start counting at 0
-        total = 0
-        for key, value in quantities.items():
-            # Convert key string into int so we can do math
-            key = int(key)
-            for product in products:
-                if product.id == key:
-                    if product.is_sale:
-                        total = total + ( product.sale_price * value)
-                    else:
-                        total = total + ( product.price * value)
+        total = Decimal(0)  # Initialize total as Decimal
+
+        for product_id, quantity in self.cart.items():
+            if isinstance(quantity, dict):  # Check if quantity is a dictionary
+                quantity = quantity.get('quantity', 0)  # Extract the 'quantity' value
+            quantity = Decimal(quantity)  # Convert quantity to Decimal
+            product = Product.objects.get(id=product_id)
+            if product.is_sale:
+                total += product.sale_price * quantity
+            else:
+                total += product.price * quantity
+
         return total
+
 
 
 
@@ -99,16 +92,17 @@ class Cart():
         quantities = self.cart
         return quantities
 
-    def update(self, product, quantity):
+    def update(self, product, quantity, foot_size=None):  # Modify update method signature
         product_id = str(product)
         product_qty = int(quantity)
         # get cart
         ourcart = self.cart
 
         # update
-        ourcart[product_id] = product_qty
+        ourcart[product_id] = {'quantity': product_qty, 'foot_size': foot_size}  # Store foot size
 
         self.session.modified = True
+
 
      
 

@@ -8,5 +8,7 @@ urlpatterns = [
     path('shipped_dash', views.shipped_dash, name="shipped_dash"),
     path('not_shipped_dash', views.not_shipped_dash, name="not_shipped_dash"),
     path('order-history/', views.order_history, name='order_history'),
+    path('payment_success', views.payment_success, name='payment_success'),
+    path('confirm-shipment/<int:pk>/', views.confirm_shipment, name='confirm_shipment'),
 
 ]

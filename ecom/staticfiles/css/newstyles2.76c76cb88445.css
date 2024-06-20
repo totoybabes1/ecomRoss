@@ -1,0 +1,70 @@
+/* Style for container */
+.container012 {
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Style for cards */
+.card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for card image */
+.card img {
+    max-width: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+/* Style for card body */
+.card-bodyV1 {
+    padding: 20px;
+}
+
+/* Style for card title */
+.card-titleV1 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+/* Style for card text */
+.card-textV1 {
+    margin-bottom: 10px;
+}
+
+/* Style for sale text */
+.text-warning {
+    color: #ffc107;
+}
+
+/* Style for button container */
+.button01 {
+    text-align: center;
+}
+
+/* Style for button */
+.btn-secondaryV1 {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .col-md-3V1 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .col-md-9V1 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .card {
+        flex-direction: column;
+    }
+}

@@ -1,83 +1,139 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block content %}
-  <!-- Header -->
-  <header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-      <div class="text-center text-white">
-        <h1 class="display-4 fw-bolder">Billing Info</h1>
-        <p class="lead fw-normal text-white-50 mb-0">Enter Your Payment</p>
-      </div>
-    </div>
-  </header>
-  <br />
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-            <div class="card-header">
-              Order Summary
-            </div>
-            <div class="card-body">
-                {% for product in cart_products %}
-                    {{ product.name }}:
-                            {% if product.is_sale %}
-                                ₱{{product.sale_price}}
-                            {% else %}
-                                ₱{{product.price}}
-                    {% endif %}
-                    <br/>
-                    <small>Quantity:
-                    {% for key, values in quantities.items %}
-                        {% if key == product.id|slugify %}
-                            {{ values }}
-                        {% endif %}
-                    {% endfor %}</small>
-                    <br/> <br/> <br/>
-                {% endfor %}
-                <strong>Total:₱{{ totals }}</strong>
-                <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
-            </div>
-          </div>
-          <br/>
-            <div class="card">
-                <div class="card-header">
-                Shipping Info
-                </div>
+{% block content %}
+    <!-- Header-->
+    <header class="bg-dark py-5">
+      <div class="text-center text-white">
+          <h1 class="display-4 fw-bolder">PLACE YOUR ORDER</h1>
+          <p class="lead fw-normal text-white-50 mb-0">Place now</p>
+      </div>
+  </header>
+
+    <br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Order Summary
+                    </div>
                     <div class="card-body">
-                    
-                        <strong>  Name: </strong> {{ shipping_info.shipping_full_name }} <br/>
-                        <strong>  Email:  </strong> {{ shipping_info.shipping_email }} <br/>
-                        <strong>  Address1:  </strong> {{ shipping_info.shipping_address1 }} <br/>
-                        <strong>  Address2:  </strong> {{ shipping_info.shipping_address2 }} <br/>
-                        <strong>  City:   </strong>{{ shipping_info.shipping_city }} <br/>
-                        <strong>  State:  </strong> {{ shipping_info.shipping_state }} <br/>
-                        <strong>  Zipcode:  </strong> {{ shipping_info.shipping_zipcode }} <br/>
-                        <strong>  Country: </strong>  {{ shipping_info.shipping_country }} <br/>
+                        {% for product in cart_products %}
+                            {{ product.name }}:
+                            {% if product.is_sale %}
+                                ₱{{ product.sale_price }}
+                            {% else %}
+                                ₱{{ product.price }}
+                            {% endif %}
+                            <br/>
+                            <small>Quantity:
+                                {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                        {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </small>
+                            <br/><br/>
+                        {% endfor %}
+                        Shipping Fee: ₱{{ shipping_fee }}
+                        <br>
+                        Subtotal: ₱{{ subtotal|floatformat:2 }}
+                        <br>
+                        Total (including shipping): ₱{{ total_amount|floatformat:2 }}
+                        <br><br/>
+                        <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
+                    </div>
+                </div>
+                <br/><br/>
+                <div class="card">
+                    <div class="card-header">
+                        Shipping Info
+                    </div>
+                    <div class="card-body">
+                        Name: {{ shipping_info.shipping_full_name }}<br/>
+                        Email: {{ shipping_info.shipping_email }}<br/>
+                        Address 1: {{ shipping_info.shipping_address1 }}<br/>
+                        Address 2: {{ shipping_info.shipping_address2 }}<br/>
+                        City: {{ shipping_info.shipping_city }}<br/>
+                        State: {{ shipping_info.shipping_state }}<br/>
+                        Zipcode: {{ shipping_info.shipping_zipcode }}<br/>
+                        Country: {{ shipping_info.shipping_country }}<br/>
                         <br/>
                         <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Shipping</a>
                     </div>
-            
-                <br/><br>
-            </div><br/>
-
-            <div class="card">
-                <div class="card-header">
-                Billing Info
                 </div>
-                    <div class="card-body">
-                        <form method="POST" action="{% url 'process_order'%}">
-                        {% csrf_token %}
-                        {{ billing_form.as_p }}
-                    </div>
-                
-                <br/><br>
+                <br/><br/>
             </div>
-            <br/>
-           <button type="submit" class="btn btn-secondary">Pay Now</button> 
-                </form>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Billing Information
+                    </div>
+                    <div class="card-body">
+                        <form id="paymentForm" method="POST" action="{% url 'process_order' %}">
+                            {% csrf_token %}
+                           
+                            <!-- Payment options -->
+                            <div class="form-group">
+                                <label for="paymentOption">Payment Option:</label>
+                                <select class="form-control" id="paymentOption" name="payment_option">
+                                    <option value="GCash">GCash</option>
+                                    <option value="Cash on Delivery">Cash on Delivery</option>
+                                </select>
+                            </div>
+
+                            <!-- GCash Transaction ID and Sender Name -->
+                            <div class="form-group" id="gcashFields">
+                                <label for="gcashTransactionId">GCash Transaction ID:</label>
+                                <input type="text" class="form-control" id="gcashTransactionId" name="gcash_transaction_id">
+                                <label for="gcashSenderName">GCash Sender Name:</label>
+                                <input type="text" class="form-control" id="gcashSenderName" name="gcash_sender_name">
+                            </div>
+
+                            <!-- COD Contact Number -->
+                            <div class="form-group" id="codField">
+                                <label for="codContactNumber">Contact Number:</label>
+                                <input type="text" class="form-control" id="codContactNumber" name="cod_contact_number">
+                            </div>
+
+                            <br/>
+                            <button type="submit" class="btn btn-secondary">Place Order</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <style>
+        body {
+            background: hsla(0, 0%, 0%, .9);
+        }
+    </style>
+
+    <!-- JavaScript to toggle visibility of payment fields -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var paymentOption = document.getElementById("paymentOption");
+            var gcashFields = document.getElementById("gcashFields");
+            var codField = document.getElementById("codField");
+
+            // Initially hide GCash and COD fields
+            gcashFields.style.display = "none";
+            codField.style.display = "none";
+
+            // Event listener for payment option change
+            paymentOption.addEventListener("change", function () {
+                if (paymentOption.value === "GCash") {
+                    gcashFields.style.display = "block";
+                    codField.style.display = "none";
+                } else if (paymentOption.value === "Cash on Delivery") {
+                    gcashFields.style.display = "none";
+                    codField.style.display = "block";
+                } else {
+                    gcashFields.style.display = "none";
+                    codField.style.display = "none";
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -1,32 +1,144 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Order History</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Date Ordered</th>
-            <th>Amount Paid</th>
-            <th>Shipped</th>
-            <th>Date Shipped</th>
-            <th>Delivered</th>
-            <th>Date Delivered</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order in orders %}
-        <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.date_ordered }}</td>
-            <td>{{ order.amount_paid }}</td>
-            <td class="shipped-{{ order.shipped|yesno:"true,false" }}">{{ order.shipped }}</td>
-            <td>{{ order.date_shipped }}</td>
-            <td>{{ order.delivered|yesno:"Delivered,Pending" }}</td>
-            <td>{{ order.delivered_date }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<br/><br/>
+  <header class="bg-dark py-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">ORDER HISTORY</h1>
+      <p class="lead fw-normal text-white-50 mb-0">View your history here</p>
+    </div>
+  </header>
+
+  <div class="container my-5">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th>Date Ordered</th>
+              <th>Product Name</th>
+              <th>₱ Amount Paid</th>
+              <th>Shipped</th>
+              <th>Date Shipped</th>
+              <th>Delivered</th>
+              <th>Date Delivered</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+              {% for item in order.orderitem_set.all %}
+                <tr>
+                  <td>{{ order.date_ordered|date:'Y-m-d h:i A' }}</td>
+                  <td>{{ item.product.name }}</td> <!-- Assuming product name is accessible through the product field -->
+                  <td>₱{{ order.amount_paid }}</td>
+                  <td class="shipped-{{ order.shipped|yesno:'true,false' }}">{{ order.shipped|yesno:'Shipped,Pending' }}</td>
+                  <td>{{ order.date_shipped|date:'Y-m-d h:i A' }}</td>
+                  <td>{{ order.delivered|yesno:'Delivered,Pending' }}</td>
+                  <td>{{ order.date_delivered|date:'Y-m-d h:i A' }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br /><br />
+
+  <style>
+    body {
+      background: hsla(0, 0%, 0%, 0.9);
+    }
+    header.bg-dark {
+      background-color: #343a40;
+      padding: 3rem 0;
+    }
+    
+    header .display-4 {
+      font-weight: 700;
+    }
+    
+    .card {
+      background-color: #f8f9fa;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    
+    .card-header {
+      padding: 1rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .card-body {
+      padding: 2rem;
+    }
+    
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      border-collapse: collapse;
+    }
+    
+    .table th,
+    .table td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+    
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+    }
+    
+    .table tbody + tbody {
+      border-top: 2px solid #dee2e6;
+    }
+    
+    .table-bordered {
+      border: 1px solid #dee2e6;
+    }
+    
+    .table-bordered th,
+    .table-bordered td {
+      border: 1px solid #dee2e6;
+    }
+    
+    .table-bordered thead th,
+    .table-bordered thead td {
+      border-bottom-width: 2px;
+    }
+    
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .thead-dark th {
+      color: #fff;
+      background-color: #343a40;
+      border-color: #454d55;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    /* Specific styles for the shipped and delivered status */
+    .shipped-true {
+      color: green;
+    }
+    
+    .shipped-false {
+      color: red;
+    }
+    
+    .delivered-true {
+      color: green;
+    }
+    
+    .delivered-false {
+      color: red;
+    }
+  </style>
 {% endblock %}

@@ -1,45 +1,144 @@
-{% extends 'base.html' %}
-{% block content %}
-
-<!-- Header-->
+{% extends 'base.html' %} {% block content %}
 <header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Update Information</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Update User Information..</p>
-        </div>
-    </div>
+  <div class="text-center text-white">
+    <h1 class="display-4 fw-bolder">USER INFORMATION</h1>
+    <p class="lead fw-normal text-white-50 mb-0">Update your Information here</p>
+  </div>
 </header>
 
-<div class="container">
-<div class="row">
-  
-        <div class="col-md-6 offset-md-3">
-            <br/><br/>
-            <form method="POST" action="{% url 'update_info' %}">
-                <strong>Billing Information</strong>
-                <br/><br/>
-                {% csrf_token %}
-                
-                {{ form.as_p }} {# Corrected form variable #}
-                <br/><br/>
-                
-                <strong>Shipping Information</strong>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form method="POST" action="{% url 'update_info' %}" class="card-form">
+        {% csrf_token %}
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-section card">
+              <div class="card-body">
+                <strong><h2>Billing Information</h2></strong>
+                <br />
+                {{ form.as_p }}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-section card">
+              <div class="card-body">
+                <strong><h2>Shipping Information</h2></strong>
+                <br />
                 {{ shipping_form.as_p }}
-
-
-                <br/><br/>
-                <button type="submit" class="btn btn-secondary">Update Information</button>
-            </form>
-            <br/>
-            <br/><br/>
-            <br/><br/>
-            <br/><br/>
-            <br/><br/>
+              </div>
+            </div>
+          </div>
         </div>
 
+        <div class="form-section text-center mt-4">
+          <button type="submit" class="btn btn-submit">
+            Update Information
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-</div>
+<style>
+  body {
+      background: #f1f1f1 !important;
+    }
+</style>
+
+<style>
+  /* Add this CSS in your static CSS file or within a <style> block in base.html */
+
+  header.bg-dark {
+    background-color: #343a40;
+    padding: 3rem 0;
+  }
+
+  header .display-4 {
+    font-weight: 700;
+  }
 
 
+
+  .card-form {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .form-section {
+    margin-bottom: 2rem;
+  }
+
+  .form-section .card {
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  .form-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #343a40;
+  }
+
+  form input,
+  form select {
+    display: flex;
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+  }
+
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form select {
+    background: #fff;
+  }
+
+  form input::placeholder,
+  form select::placeholder {
+    color: #6c757d;
+  }
+
+  .btn-submit {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  .btn-submit:hover {
+    background-color: #ec971f;
+    border-color: #d58512;
+  }
+
+  /* Optional: Add icons to the input fields */
+  .form-group {
+    position: relative;
+  }
+
+  .form-group i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+  }
+
+  .form-group input {
+    padding-left: 2.5rem; /* adjust based on icon size */
+  }
+</style>
 {% endblock %}

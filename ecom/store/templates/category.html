@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<link href="{% static 'css/base.css' %}" rel="stylesheet" />
+<link href="{% static 'css/home.css' %}" rel="stylesheet" />
     <!-- Header-->
     <header class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
@@ -84,4 +87,36 @@
         </div>
         </div>
     </section>
+    <style>
+        body {
+          background: gray !important;
+        }
+        
+        .card {
+          
+          border-radius: 0.5rem;
+          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .card:hover {
+          transform: translateY(-0.5rem);
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+      
+        .card-header {
+          padding: 1rem;
+        }
+        
+        .card-body {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        .badge {
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+        }
+      </style>
 {% endblock %}

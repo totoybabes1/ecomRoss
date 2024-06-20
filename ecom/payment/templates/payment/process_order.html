@@ -5,8 +5,8 @@
   <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
       <div class="text-center text-white">
-        <h1 class="display-4 fw-bolder">Processing Order....</h1>
-        <p class="lead fw-normal text-white-50 mb-0">Enter Your Payment</p>
+        <h1 class="display-4 fw-bolder">Order Summary</h1>
+        <p class="lead fw-normal text-white-50 mb-0">Review your order before placing it</p>
       </div>
     </div>
   </header>
@@ -14,70 +14,52 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-            <div class="card-header">
-              Order Summary
-            </div>
-            <div class="card-body">
-                {% for product in cart_products %}
-                    {{ product.name }}:
-                            {% if product.is_sale %}
-                                ₱{{product.sale_price}}
-                            {% else %}
-                                ₱{{product.price}}
-                    {% endif %}
-                    <br/>
-                    <small>Quantity:
-                    {% for key, values in quantities.items %}
-                        {% if key == product.id|slugify %}
-                            {{ values }}
-                        {% endif %}
-                    {% endfor %}</small>
-                    <br/> <br/> <br/>
-                {% endfor %}
-                <strong>Total:₱{{ totals }}</strong>
-                <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
-            </div>
-          </div>
-          <br/>
-            <div class="card">
-                <div class="card-header">
-                Shipping Info
-                </div>
-                    <div class="card-body">
-                    
-                        <strong>  Name: </strong> {{ shipping_info.shipping_full_name }} <br/>
-                        <strong>  Email:  </strong> {{ shipping_info.shipping_email }} <br/>
-                        <strong>  Address1:  </strong> {{ shipping_info.shipping_address1 }} <br/>
-                        <strong>  Address2:  </strong> {{ shipping_info.shipping_address2 }} <br/>
-                        <strong>  City:   </strong>{{ shipping_info.shipping_city }} <br/>
-                        <strong>  State:  </strong> {{ shipping_info.shipping_state }} <br/>
-                        <strong>  Zipcode:  </strong> {{ shipping_info.shipping_zipcode }} <br/>
-                        <strong>  Country: </strong>  {{ shipping_info.shipping_country }} <br/>
-                        <br/>
-                        <a href="{% url 'checkout' %}" class="btn btn-outline-secondary">Update Shipping</a>
-                    </div>
-            
-                <br/><br>
-            </div><br/>
+      <div class="col-md-6">
+        <h2>Order Summary</h2>
+        <ul class="list-group mb-3">
+          {% for product in cart_products %}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">{{ product.name }}</h6>
+                <small class="text-muted">Quantity: {{ quantities|product.id }}</small>
+              </div>
+              <span class="text-muted">₱{{ product.price }}</span>
+            </li>
+          {% endfor %}
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Subtotal (PHP)</span>
+            <strong>₱{{ subtotal }}</strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Shipping Fee (PHP)</span>
+            <strong>₱{{ shipping_fee }}</strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (PHP)</span>
+            <strong>₱{{ total }}</strong>
+          </li>
+        </ul>
+      </div>
 
-            <div class="card">
-                <div class="card-header">
-                Billing Info
-                </div>
-                    <div class="card-body">
-                        <form method="POST" action="{% url 'process_order'%}">
-                        {% csrf_token %}
-                        {{ billing_form.as_p }}
-                    </div>
-                
-                <br/><br>
-            </div>
-            <br/>
-           <button type="submit" class="btn btn-secondary">Pay Now</button> 
-                </form>
+      <div class="col-md-6">
+        <h2>Billing Information</h2>
+        <p><strong>Full Name:</strong> {{ shipping_info.shipping_full_name }}</p>
+        <p><strong>Email:</strong> {{ shipping_info.shipping_email }}</p>
+        <p><strong>Address:</strong> {{ shipping_info.shipping_address1 }}, {{ shipping_info.shipping_address2 }}, {{ shipping_info.shipping_city }}, {{ shipping_info.shipping_state }}, {{ shipping_info.shipping_zipcode }}, {{ shipping_info.shipping_country }}</p>
+
+        <h2>Payment Information</h2>
+        <p><strong>Payment Method:</strong> {{ billing_info.payment_method }}</p>
+        {% if billing_info.payment_method == 'GCASH' %}
+          <p><strong>GCash Number:</strong> {{ billing_info.gcash_number }}</p>
+        {% elif billing_info.payment_method == 'COD' %}
+          <p><strong>COD Instructions:</strong> {{ billing_info.cod_instructions }}</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'process_order' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+      </div>
     </div>
   </div>
-  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 {% endblock %}
