@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+  <div class="text-center text-white">
+    <h1 class="display-4 fw-bolder">SIZE CATEGORIES</h1>
+    <p class="lead fw-normal text-white-50 mb-0">CHOOSE YOUR SIZE</p>
+  </div>
+</header>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    {% for category in categories %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">
+            <a href="{% url 'category' category %}" class="card-link"
+              >{{ category }}</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<style>
+  body {
+    background: gray !important;
+  }
+  
+  .card {
+    
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .card:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+</style>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+{% endblock %}

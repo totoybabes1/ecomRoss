@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% load static %}
+
+  <style>
+    .main-bg {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f5f5f5;
+    }
+
+    .box-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 200px;
+    }
+
+    .wrap-login100 {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login100-form-title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+      text-align: center;
+    }
+
+    .wrap-input100 {
+      margin-bottom: 1rem;
+    }
+
+    .input100 {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login100-form-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .login100-form-btn:hover {
+      background-color: #45a049;
+    }
+
+    .flex-col-c {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .txt1, .txt3 {
+      display: block;
+      text-align: center;
+    }
+
+    .txt3 {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .txt3:hover {
+      text-decoration: underline;
+    }
+  </style>
+  <header class="bg-dark py-5">
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">RGB SHOES</h1>
+      <p class="lead fw-normal text-white-50 mb-0">FIT YOUR STYLES</p>
+    </div>
+  </header>
+
+  <div class="main-bg">
+    <div class="box-container">
+      <div class="wrap-login100">
+        <strong><span class="login100-form-title">LOGIN</span></strong>
+        <form method="POST" action="{% url 'login' %}" class="login100-form validate-form">
+          {% csrf_token %}
+          <div class="wrap-input100 validate-input" data-validate="Please enter username">
+            <input type="text" class="input100 form-control" id="username" name="username" placeholder="Username" />
+          </div>
+          <div class="wrap-input100 validate-input" data-validate="Please enter password">
+            <input type="password" class="input100 form-control" id="password" name="password" placeholder="Password" />
+          </div>
+          <div class="container-login100-form-btn">
+            <button type="submit" class="login100-form-btn">LOGIN</button>
+          </div>
+          <div class="flex-col-c p-t-140 p-b-40">
+            <span class="txt1 p-b-9">Don’t have an account?</span>
+            <a href="{% url 'register' %}" class="txt3">Sign up now</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

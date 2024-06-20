@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="text-center text-white">
+        <h1 class="display-4 fw-bolder">PRODUCT VIEW</h1>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="lead fw-normal text-white-50 mb-0"></p>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="Product Image">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            {% if product.is_sale %}
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <div class="bi-star-fill"></div>
+                                &nbsp;&nbsp;&nbsp;Sale!&nbsp;&nbsp;
+                                <div class="bi-star-fill"></div>
+                            </div>
+                            <strike>₱{{ product.price }}</strike>
+                            &nbsp;₱{{ product.sale_price }}
+                            <br>
+                            {% else %}
+                            <p class="card-text"><small class="text-body-secondary">₱{{ product.price }}</small></p>
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                            <div class="row">
+                                <div class="col-md-4">Quantity:</div>
+                                <div class="col-md-8">
+                                    <select class="form-select form-select-sm" id="qty-cart">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">Foot Size:</div>
+                                <div class="col-md-8">
+                                    <select class="form-select form-select-sm" id="foot-size">
+                                        <option value="">Select Foot Size</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <!-- Add more options as needed -->
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            {% endif %}
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <a href="{% url 'index' %}" class="btn btn-secondary w-100">Home</a>
+                                </div>
+                                <div class="col-md-6">
+                                    {% if user.is_authenticated %}
+                                    <button type="button" value="{{ product.id }}" class="btn btn-secondary w-100" id="add-cart">Add to Cart</button>
+                                    {% else %}
+                                    <a href="{% url 'login' %}" class="btn btn-secondary w-100">Login to Add to Cart</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/><br/><br/><br/><br/>
+<script>
+    
+    
+    $(document).on('click', '#add-cart', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_add' %}',
+            data: {
+                product_id: $(this).val(), // Use $(this) to refer to the clicked button
+                product_qty: $('#qty-cart').val(), // Use .val() to get the selected value
+                foot_size: $('#foot-size').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function (json) {
+                $('#cart_quantity').text(json.qty); // Update the cart quantity in the navbar
+                location.reload(); // You may want to remove this line depending on your application's flow
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ': ' + xhr.responseText);
+            }
+        });
+    });
+    
+</script>
+<style>
+    body {
+        background: #f1f1f1 !important;
+      }
+</style>
+
+{% endblock %}
